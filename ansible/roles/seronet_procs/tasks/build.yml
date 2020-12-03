@@ -15,7 +15,7 @@
     dest: "{{ workspace }}/{{ version }}.zip"
 
 - name: upload zip file to s3
-  s3:
+  aws_s3:
     bucket: "{{ procname }}"
     object: "{{ version }}.zip"
     src: "{{ workspace }}/{{ version }}.zip"
