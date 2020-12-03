@@ -1,0 +1,5 @@
+---
+# vars file for cicd
+procname: "{{ lookup('env','PROCNAME') }}"
+version: "{{ lookup('env','VERSION') }}"
+workspace: "{{ lookup('env','WORKSPACE') }}"

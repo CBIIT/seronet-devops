@@ -1,0 +1,22 @@
+---
+- name: get repo commit ID
+  shell: git rev-parse HEAD
+  args:
+    chdir: "{{ workspace }}"
+  register: repo_commit
+
+- name: echo repo commit
+  debug:
+    msg: "{{ repo_commit.stdout_lines }}"
+
+- name: build zip archive
+  archive:
+    path: "{{ workspace }}/src"
+    dest: "{{ workspace }}/{{ version }}.zip"
+
+- name: upload zip file to s3
+  s3:
+    bucket: "{{ procname }}"
+    object: "{{ version }}.zip"
+    src: "{{ workspace }}/{{ version }}.zip"
+    mode: put
