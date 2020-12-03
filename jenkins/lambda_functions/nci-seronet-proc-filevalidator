@@ -44,7 +44,7 @@ pipeline {
   	stage('checkout'){
   		steps {
   			checkout([$class: 'GitSCM', 
-  				branches: [[name: '*/master']], 
+  				branches: [[name: '*/main']], 
   				doGenerateSubmoduleConfigurations: 
   				false, extensions: [], submoduleCfg: [], 
   				userRemoteConfigs: 
@@ -53,7 +53,7 @@ pipeline {
   			checkout( poll: false, 
 				changelog:false,
 				scm: [$class: 'GitSCM', 
-				branches: [[name: '*/master']], 
+				branches: [[name: '*/main']], 
 				doGenerateSubmoduleConfigurations: false, 
 				extensions: [[$class: 'DisableRemotePoll'],
 				[$class: 'PathRestriction', excludedRegions: '*'], 
