@@ -9,13 +9,6 @@
   debug:
     msg: "{{ repo_commit.stdout_lines }}"
 
-- name: install required packages
-  pip:
-    name:
-      - awscli
-      - boto3
-    state: present
-
 - name: build zip archive
   archive:
     path: "{{ workspace }}/src"
