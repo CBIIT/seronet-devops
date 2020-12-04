@@ -14,11 +14,18 @@
     path: "{{ workspace }}/src"
     dest: "{{ workspace }}/{{ version }}.zip"
 
-- name: upload zip file to s3
+- name: download file
   aws_s3:
-    aws_access_key: ''
-    aws_secret_key: ''
-    bucket: "{{ procname }}"
-    object: "{{ version }}.zip"
-    src: "{{ workspace }}/{{ version }}.zip"
-    mode: put
+    bucket: "nci-seronet-cbc01-test"
+    object: "testing.txt"
+    dest: "test.file"
+    mode: get
+
+#- name: upload zip file to s3
+#  aws_s3:
+#    aws_access_key: ''
+#    aws_secret_key: ''
+#    bucket: "{{ procname }}"
+#    object: "{{ version }}.zip"
+#    src: "{{ workspace }}/{{ version }}.zip"
+#    mode: put
