@@ -21,7 +21,7 @@
 #    msg: "{{ zip_name }}"
 
 - name: build zip archive
-  shell: "zip {{ version }}.zip"
+  shell: "zip {{ version }}.zip *"
   args:
     chdir: "{{ workspace }}"
 
