@@ -13,6 +13,7 @@
   archive:
     path: "{{ workspace }}/src/*"
     dest: "{{ workspace }}/{{ version }}.zip"
+    mode: 0644
   register: zip_name
 
 - name: echo zip name
