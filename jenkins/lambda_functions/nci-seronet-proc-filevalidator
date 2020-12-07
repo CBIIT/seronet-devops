@@ -76,7 +76,7 @@ pipeline {
 			script {
 				def now = new Date()
 				env.VERSION = now.format("yyMMdd.HHmm", TimeZone.getTimeZone('EDT'))
-				println ${env.VERSION}
+				println env.VERSION
 				}
 			}
 
