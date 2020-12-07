@@ -13,6 +13,11 @@
   archive:
     path: "{{ workspace }}/src"
     dest: "{{ workspace }}/{{ version }}.zip"
+  register: zip_name
+
+- name: echo zip name
+  debug:
+    msg: "{{ zip_name }}"
 
 - name: upload zip file to s3
   aws_s3:
