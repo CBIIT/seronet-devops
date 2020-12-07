@@ -99,11 +99,17 @@ pipeline {
   }
   post {
 
-//	always {
-//
+	always {
+
+		emailext(attachmentsPattern: '*.zip',
+			mimeType: 'application/zip',
+			body: "test",
+			subject: 'zip attached',
+			to: "${EmailRecipients}")
+
 //      sendSlackMessage()
-//
-//    }
+
+    }
 
 	cleanup {
 	
