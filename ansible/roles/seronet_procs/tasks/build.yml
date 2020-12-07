@@ -9,16 +9,21 @@
   debug:
     msg: "{{ repo_commit.stdout_lines }}"
 
-- name: build zip archive
-  archive:
-    path: "{{ workspace }}/src/*"
-    dest: "{{ workspace }}/{{ version }}.zip"
-    #mode: 0644
-  register: zip_name
+#- name: build zip archive
+#  archive:
+#    path: "{{ workspace }}/src/*"
+#    dest: "{{ workspace }}/{{ version }}.zip"
+#    #mode: 0644
+#  register: zip_name
+#
+#- name: echo zip name
+#  debug:
+#    msg: "{{ zip_name }}"
 
-- name: echo zip name
-  debug:
-    msg: "{{ zip_name }}"
+- name: build zip archive
+    shell: "zip {{ version }}.zip"
+    args:
+      chdir: "{{ workspace }}"
 
 - name: upload zip file to s3
   aws_s3:
