@@ -76,7 +76,7 @@ pipeline {
 			script {
 				def now = new Date()
 				env.VERSION = now.format("yyyyMMdd.HHmm", TimeZone.getTimeZone('EDT'))
-				println env.VERSION
+//				println env.VERSION
 				}
 			}
 
@@ -84,7 +84,7 @@ pipeline {
 
   	stage('build and upload'){
       environment {
-       VERSION = "${BUILD_DATE}"
+//       VERSION = "${BUILD_DATE}"
 	   PROCNAME = "nci-seronet-proc-filevalidator"
       }
  		steps {
