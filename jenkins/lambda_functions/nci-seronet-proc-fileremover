@@ -48,7 +48,7 @@ pipeline {
   				doGenerateSubmoduleConfigurations: 
   				false, extensions: [], submoduleCfg: [], 
   				userRemoteConfigs: 
-  				[[url: 'https://github.com/CBIIT/nci-seronet-proc-filevalidator']]])
+  				[[url: 'https://github.com/CBIIT/nci-seronet-proc-fileremover']]])
 
   			checkout( poll: false, 
 				changelog:false,
@@ -85,7 +85,7 @@ pipeline {
   	stage('build and upload'){
       environment {
 //       VERSION = "${BUILD_DATE}"
-	   PROCNAME = "nci-seronet-proc-filevalidator"
+	   PROCNAME = "nci-seronet-proc-fileremover"
       }
  		steps {
  			wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
