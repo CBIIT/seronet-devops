@@ -9,16 +9,16 @@
   debug:
     msg: "{{ repo_commit.stdout_lines }}"
 
-#- name: build zip archive
-#  archive:
-#    path: "{{ workspace }}/src/*"
-#    dest: "{{ workspace }}/{{ version }}.zip"
-#    #mode: 0644
-#  register: zip_name
-#
-#- name: echo zip name
-#  debug:
-#    msg: "{{ zip_name }}"
+- name: check if requirements file exists
+  stat: 
+    path: "{{ workspace }}/requirements.txt"
+  register: reqs_present
+
+- name: get python requirements
+  shell: "pip install --ignore-installed --target ./lib/python3.8/site-packages -r requirements.txt"
+  args:
+    chdir: "{{ workspace }}"
+  when: reqs_present.stat.exists == true
 
 - name: build zip archive
   shell: "zip -r {{ version }}.zip * -x README.md -x '*seronet-devops*'"
