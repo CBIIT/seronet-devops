@@ -21,9 +21,9 @@
 #    msg: "{{ zip_name }}"
 
 - name: build zip archive
-    shell: "zip {{ version }}.zip"
-    args:
-      chdir: "{{ workspace }}"
+  shell: "zip {{ version }}.zip"
+  args:
+    chdir: "{{ workspace }}"
 
 - name: upload zip file to s3
   aws_s3:
