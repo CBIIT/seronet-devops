@@ -21,7 +21,7 @@
 #    msg: "{{ zip_name }}"
 
 - name: build zip archive
-  shell: "zip -r {{ version }}.zip * -x README.md -x seronet-devops/"
+  shell: "zip -r {{ version }}.zip * -x README.md -x seronet-devops/**\*"
   args:
     chdir: "{{ workspace }}"
 
