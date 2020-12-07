@@ -66,11 +66,18 @@ pipeline {
         }
  
   	}
-//    stage('Set Environment'){
+    stage('Set Environment'){
 //      environment {
 //        SLACK_URL = "${SLACK_URL}"
 //      }
-//	}
+
+        script {
+            def now = new Date()
+			env.VERSION = now.format("yyMMdd.HHmm", TimeZone.getTimeZone('EDT'))
+            println ${env.VERSION}
+            }
+
+	}
 
   	stage('build and upload'){
       environment {
