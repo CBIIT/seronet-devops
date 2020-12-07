@@ -11,8 +11,8 @@
 
 - name: build zip archive
   archive:
-    path: "src/lambda_function.py"
-    dest: "{{ version }}.zip"
+    path: "./src/"
+    dest: "./{{ version }}.zip"
     mode: 0644
   register: zip_name
 
