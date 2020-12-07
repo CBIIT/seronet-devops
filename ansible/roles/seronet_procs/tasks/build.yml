@@ -11,7 +11,7 @@
 
 - name: build zip archive
   archive:
-    path: "{{ workspace }}/src"
+    path: "{{ workspace }}/src/*"
     dest: "{{ workspace }}/{{ version }}.zip"
   register: zip_name
 
