@@ -21,9 +21,14 @@
 #    msg: "{{ zip_name }}"
 
 - name: build zip archive
-  shell: "zip -r {{ version }}.zip * -x README.md -x seronet-devops/**\*"
+  shell: "zip -r {{ version }}.zip * -x README.md -x seronet-devops"
   args:
     chdir: "{{ workspace }}"
+  register: zip_name
+
+- name: echo zip name
+  debug:
+    msg: "{{ zip_name }}"
 
 - name: upload zip file to s3
   aws_s3:
