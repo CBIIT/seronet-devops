@@ -19,6 +19,11 @@
   args:
     chdir: "{{ workspace }}/python"
   when: reqs_present.stat.exists == true
+    register: lib_cmd
+
+- name: echo libs
+  debug:
+    msg: "{{ lib_cmd }}"
 
 - name: build zip archive
   shell: "zip -r {{ version }}.zip python -x *README.md -x *requirements.txt -x '*seronet-devops*'"
