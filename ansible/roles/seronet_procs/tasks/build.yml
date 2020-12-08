@@ -21,7 +21,7 @@
   when: reqs_present.stat.exists == true
 
 - name: build zip archive
-  shell: "zip -r {{ version }}.zip * -x *README.md -x *requirements.txt -x '*seronet-devops*'"
+  shell: "zip -r {{ version }}.zip python -x *README.md -x *requirements.txt -x '*seronet-devops*'"
   args:
     chdir: "{{ workspace }}"
   register: zip_name
