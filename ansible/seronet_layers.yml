@@ -1,0 +1,11 @@
+---
+- name: seronet lambda cicd pipeline
+  hosts: seronet_procs
+  connection: local
+  gather_facts: no
+    
+  tasks:
+    - name: build and upload
+      include_role:
+        name: seronet_procs
+        tasks_from: build_layers

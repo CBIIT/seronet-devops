@@ -21,9 +21,9 @@
   when: reqs_present.stat.exists == true
 
 - name: build zip archive
-  shell: "zip -r {{ version }}.zip * -x *README.md -x *requirements.txt -x '*seronet-devops*' -x '*.git*'"
+  shell: "zip -r {{ version }}.zip python -x *README.md -x *requirements.txt -x '*seronet-devops*' -x '*.git*'"
   args:
-    chdir: "{{ workspace }}/python"
+    chdir: "{{ workspace }}"
   register: zip_name
 
 - name: echo zip name
@@ -34,5 +34,5 @@
   aws_s3:
     bucket: "{{ procname }}"
     object: "{{ version }}.zip"
-    src: "{{ workspace }}/python/{{ version }}.zip"
+    src: "{{ workspace }}/{{ version }}.zip"
     mode: put

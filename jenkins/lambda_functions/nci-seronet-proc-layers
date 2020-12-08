@@ -91,7 +91,7 @@ pipeline {
  		steps {
  			wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
 			  ansiblePlaybook(  			
-                playbook: '${WORKSPACE}/seronet-devops/ansible/seronet_procs.yml', 
+                playbook: '${WORKSPACE}/seronet-devops/ansible/seronet_layers.yml', 
             	  inventory: '${WORKSPACE}/seronet-devops/ansible/hosts', 
             	  colorized: true)
  				}
