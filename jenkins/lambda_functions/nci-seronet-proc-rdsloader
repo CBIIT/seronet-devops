@@ -46,7 +46,8 @@ pipeline {
   			checkout([$class: 'GitSCM', 
   				branches: [[name: '*/main']], 
   				doGenerateSubmoduleConfigurations: 
-  				false, extensions: [], submoduleCfg: [], 
+  				false, extensions: [[$class: 'RelativeTargetDirectory', 
+				relativeTargetDir: 'python']], submoduleCfg: [], 
   				userRemoteConfigs: 
   				[[url: 'https://github.com/CBIIT/nci-seronet-proc-rdsloader']]])
 
