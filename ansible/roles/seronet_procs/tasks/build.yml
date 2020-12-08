@@ -11,7 +11,7 @@
 
 - name: check if requirements file exists
   stat: 
-    path: "{{ workspace }}/requirements.txt"
+    path: "{{ workspace }}/python/requirements.txt"
   register: reqs_present
 
 - name: get python requirements
@@ -19,14 +19,9 @@
   args:
     chdir: "{{ workspace }}/python"
   when: reqs_present.stat.exists == true
-  register: lib_cmd
-
-- name: echo libs
-  debug:
-    msg: "{{ lib_cmd }}"
 
 - name: build zip archive
-  shell: "zip -r {{ version }}.zip python -x *README.md -x *requirements.txt -x '*seronet-devops*'"
+  shell: "zip -r {{ version }}.zip python -x *README.md -x *requirements.txt -x '*seronet-devops*' -x '*.git*'"
   args:
     chdir: "{{ workspace }}"
   register: zip_name
