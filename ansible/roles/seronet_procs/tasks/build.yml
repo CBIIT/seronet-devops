@@ -19,7 +19,7 @@
   args:
     chdir: "{{ workspace }}/python"
   when: reqs_present.stat.exists == true
-    register: lib_cmd
+  register: lib_cmd
 
 - name: echo libs
   debug:
