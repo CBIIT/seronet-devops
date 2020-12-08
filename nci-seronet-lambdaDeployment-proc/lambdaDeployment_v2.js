@@ -47,7 +47,11 @@ exports.handler = function(event, context) {
 			});
 			
     } else {
-        var functionName = bucket;
+        if (bucket === "nci-seronet-proc-fileremover") {
+			var functionName = "seronet-file-remover-sns";
+		} else {
+			var functionName = bucket;
+		}
         console.log("uploaded to lambda function: " + functionName);
         var params = {
             FunctionName: functionName,

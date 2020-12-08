@@ -86,7 +86,7 @@ pipeline {
   	stage('build and upload'){
       environment {
 //       VERSION = "${BUILD_DATE}"
-	   PROCNAME = "seronet-file-remover-sns"
+	   PROCNAME = "nci-seronet-proc-fileremover"
       }
  		steps {
  			wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
