@@ -44,7 +44,7 @@ pipeline {
   	stage('checkout'){
   		steps {
   			checkout([$class: 'GitSCM', 
-  				branches: [[name: '*/main']], 
+  				branches: [[name: 'refs/remotes/origin/main']], 
   				doGenerateSubmoduleConfigurations: 
   				false, extensions: [[$class: 'RelativeTargetDirectory', 
 				relativeTargetDir: 'python']], submoduleCfg: [], 
