@@ -3,7 +3,7 @@ var lambda = new AWS.Lambda();
 exports.handler = function(event, context) {
     key = event.Records[0].s3.object.key
     bucket = event.Records[0].s3.bucket.name
-    if (bucket == "nci-seronet-proc-layers") {
+    if (bucket.includes("nci-seronet-proc-layers")) {
         console.log('Create new shared layer for Seronet proc functions');
 		var layerParams = {
 			CompatibleRuntimes: [ 
