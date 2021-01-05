@@ -5,6 +5,12 @@
     chdir: "{{ workspace }}/python"
   register: repo_url
 
+- name: get repo branch
+  shell: git branch --show-current
+  args:
+    chdir: "{{ workspace }}/python"
+  register: repo_branch
+
 - name: get repo commit ID
   shell: git rev-parse HEAD
   args:
@@ -34,6 +40,7 @@
   shell: |
     echo "Current Version:
     URL: {{ repo_url.stdout_lines }}
+    Branch: {{ repo_branch.stdout_lines }}
     Commit ID: {{ repo_commit.stdout_lines }}" >> {{ workspace }}/python/function.ver
 
 - name: build zip archive
