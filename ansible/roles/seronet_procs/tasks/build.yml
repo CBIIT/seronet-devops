@@ -2,13 +2,13 @@
 - name: get repo url
   shell: git config --get remote.origin.url
   args:
-    chdir: "{{ workspace }}"
+    chdir: "{{ workspace }}/python"
   register: repo_url
 
 - name: get repo commit ID
   shell: git rev-parse HEAD
   args:
-    chdir: "{{ workspace }}"
+    chdir: "{{ workspace }}/python"
   register: repo_commit
 
 - name: echo repo url
@@ -34,7 +34,7 @@
   shell: |
     echo "Current Version:
     URL: {{ repo_url.stdout_lines }}
-    Commit ID: {{ repo_commit.stdout_lines }}" >> function.ver
+    Commit ID: {{ repo_commit.stdout_lines }}" >> {{ workspace }}/python/function.ver
 
 - name: build zip archive
   shell: "zip -r {{ version }}.zip * -x *README.md -x *requirements.txt -x '*seronet-devops*' -x '*.git*'"
