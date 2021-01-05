@@ -21,6 +21,10 @@
   debug:
     msg: "{{ repo_url.stdout_lines }}"
 
+- name: echo repo branch
+  debug:
+    msg: "{{ repo_branch.stdout_lines }}"
+
 - name: echo repo commit
   debug:
     msg: "{{ repo_commit.stdout_lines }}"
