@@ -1,9 +1,19 @@
 ---
+- name: get repo url
+  shell: git config --get remote.origin.url
+  args:
+    chdir: "{{ workspace }}"
+  register: repo_url
+
 - name: get repo commit ID
   shell: git rev-parse HEAD
   args:
     chdir: "{{ workspace }}"
   register: repo_commit
+
+- name: echo repo url
+  debug:
+    msg: "{{ repo_url.stdout_lines }}"
 
 - name: echo repo commit
   debug:
@@ -19,6 +29,12 @@
   args:
     chdir: "{{ workspace }}/python"
   when: reqs_present.stat.exists == true
+
+- name: write version file
+  shell: |
+    echo "Current Version:
+    URL: {{ repo_url.stdout_lines }}
+    Commit ID: {{ repo_commit.stdout_lines }}" >> function.ver
 
 - name: build zip archive
   shell: "zip -r {{ version }}.zip * -x *README.md -x *requirements.txt -x '*seronet-devops*' -x '*.git*'"
