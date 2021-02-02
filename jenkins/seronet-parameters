@@ -104,6 +104,7 @@ pipeline {
           echo ""
           echo ""
 
+          aws configure set default.region us-east-1
           aws ssm describe-parameters
 
           '''
