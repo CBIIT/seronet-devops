@@ -98,15 +98,15 @@ pipeline {
 
           sh label: 'Param-Updates', script: '''#!/bin/bash
 
-          #jenkinsParams=$(echo "${PARAMETERS}" | sed ''s/[]//g'')
-		  jenkinsParams="$(echo "${PARAMETERS}")"
+          jenkinsParams="$(echo "${PARAMETERS}" | sed 's/[]//g')"
+		  #jenkinsParams="$(echo "${PARAMETERS}")"
 		  echo "Current Parameters:"
           echo ""
           echo "$jenkinsParams"
           echo ""
           echo ""
 
-          for p in $jenkins_params
+          for p in $jenkinsParams
           do
             echo "Current Parameter is:     $p"
           done
