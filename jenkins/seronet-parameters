@@ -112,7 +112,7 @@ pipeline {
 			echo "Current Parameter name is:     $parVal"
 			echo ""
 			
-			aws ssm describe-parameters --name $parName
+			aws ssm get-parameter --name $parName
           done
 
           '''
