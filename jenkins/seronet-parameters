@@ -104,6 +104,11 @@ pipeline {
           echo ""
           echo ""
 
+          for p in ${PARAMETERS}
+          do
+            echo "Current Parameter is:     $p.name"
+          done
+
           aws configure set default.region us-east-1
           aws ssm describe-parameters
 
