@@ -98,15 +98,16 @@ pipeline {
 
           sh label: 'Param-Updates', script: '''#!/bin/bash
 
-          echo "Current Parameters:"
+          jenkins_params=$(echo "${PARAMETERS}" | sed 's/[]//g')
+		  echo "Current Parameters:"
           echo ""
-          echo "${PARAMETERS}"
+          echo "$jenkins_params"
           echo ""
           echo ""
 
-          for p in ${PARAMETERS}
+          for p in $jenkins_params
           do
-            echo "Current Parameter is:     $p.name"
+            echo "Current Parameter is:     $p"
           done
 
           aws configure set default.region us-east-1
