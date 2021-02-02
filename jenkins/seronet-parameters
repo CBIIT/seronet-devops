@@ -98,7 +98,7 @@ pipeline {
 
           sh label: 'Param-Updates', script: '''#!/bin/bash
 
-          jenkinsParams=$("echo ${PARAMETERS} | sed 's/[]//g'")
+          jenkinsParams=$("echo "${PARAMETERS}" | sed 's/]//g'")
 		  #jenkinsParams=`echo ${PARAMETERS} | sed 's/,//g'`
 		  echo "Current Parameters:"
           echo ""
