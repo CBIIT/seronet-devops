@@ -98,9 +98,13 @@ pipeline {
 
           sh label: 'Param-Updates', script: '''#!/bin/bash
 
+          echo "Current Parameters:"
+          echo ""
           echo "${PARAMETERS}"
+          echo ""
+          echo ""
 
-          aws ssm get-parameters
+          aws ssm describe-parameters
 
           '''
 
