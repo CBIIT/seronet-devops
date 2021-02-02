@@ -111,7 +111,10 @@ pipeline {
 
           for p in $jenkinsParams
           do
-            echo "Current Parameter is:     $p"
+		    IFS=: read parName parVal <<< "$p"
+            echo "Current Parameter name is:     $parName"
+			echo "Current Parameter name is:     $parVal"
+			echo ""
           done
 
           aws configure set default.region us-east-1
