@@ -98,16 +98,12 @@ pipeline {
 
           sh label: 'Param-Updates', script: '''#!/bin/bash
 
-          #jenkinsParams=$("echo "${PARAMETERS}" | sed 's/]//g'")
-		  #jenkinsParams=`echo ${PARAMETERS} | sed 's/,//g'`
+		  aws configure set default.region us-east-1
+
 		  jenkinsParams="${PARAMETERS//[}"
 		  jenkinsParams="${jenkinsParams//]}"
 		  jenkinsParams="${jenkinsParams//,}"
-		  echo "Current Parameters:"
-          echo ""
-          echo "$jenkinsParams"
-          echo ""
-          echo ""
+          #echo "$jenkinsParams"
 
           for p in $jenkinsParams
           do
@@ -115,10 +111,9 @@ pipeline {
             echo "Current Parameter name is:     $parName"
 			echo "Current Parameter name is:     $parVal"
 			echo ""
+			
+			aws ssm describe-parameters --name $parName
           done
-
-          aws configure set default.region us-east-1
-          #aws ssm describe-parameters
 
           '''
 
