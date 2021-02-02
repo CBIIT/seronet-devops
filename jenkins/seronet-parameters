@@ -100,7 +100,9 @@ pipeline {
 
           #jenkinsParams=$("echo "${PARAMETERS}" | sed 's/]//g'")
 		  #jenkinsParams=`echo ${PARAMETERS} | sed 's/,//g'`
-		  jenkinsParams="${PARAMETERS//[//]}"
+		  jenkinsParams="${PARAMETERS//[}"
+		  jenkinsParams="${jenkinsParams//]}"
+		  jenkinsParams="${jenkinsParams//,}"
 		  echo "Current Parameters:"
           echo ""
           echo "$jenkinsParams"
