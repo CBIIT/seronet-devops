@@ -72,21 +72,6 @@ pipeline {
         }
  
   	}
-	
-    stage('Set Environment'){
-//      environment {
-//        SLACK_URL = "${SLACK_URL}"
-//      }
-
-        steps{
-			script {
-				def now = new Date()
-				env.VERSION = now.format("yyyyMMdd.HHmm", TimeZone.getTimeZone('EDT'))
-//				println env.VERSION
-				}
-			}
-
-	}
 
     stage('update params'){
       environment {
@@ -100,22 +85,14 @@ pipeline {
 
 		  aws configure set default.region us-east-1
 
-		  echo "${PARAMETERS}"
-		  #jenkinsParams="${PARAMETERS//[}"
 		  jenkinsParams="${PARAMETERS:1}"
-		  #jenkinsParams="${jenkinsParams//]}"
-		  #jenkinsParams="${jenkinsParams%?}"
-		  #jenkinsParams="${jenkinsParams//,}"
-          echo "$jenkinsParams"
+          #echo "$jenkinsParams"
 
           for p in $jenkinsParams
           do
 		    IFS=: read parName parVal <<< "$p"
-            #parVal="${parVal::-2}"
 			echo "Current Parameter name is:     $parName"
-			echo "Current Value is:     $parVal"
 			parVal="${parVal%?}"
-			echo "Current Value is:     $parVal"
 			echo ""
 
 			if [ "$parVal" ]
@@ -123,11 +100,11 @@ pipeline {
 
 			  echo "Setting param $parName"
 			  #aws ssm get-parameter --name $parName
-			  #aws ssm put-parameter \
-              #  --name $parName \
-              #  --type "SecureString" \
-              #  --value $parVal \
-              #  --overwrite
+			  aws ssm put-parameter \
+                --name $parName \
+                --type "SecureString" \
+                --value $parVal \
+                --overwrite
 
             fi
 
