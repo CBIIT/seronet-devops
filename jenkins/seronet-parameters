@@ -112,7 +112,8 @@ pipeline {
 			echo "Current Parameter value is:     $parVal"
 			echo ""
 
-			if $parVal then
+			if [ "$parVal" ]
+			then
 			
 			  echo "Getting param $parName"
 			  aws ssm get-parameter --name $parName
