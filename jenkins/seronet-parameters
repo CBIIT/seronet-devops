@@ -105,12 +105,15 @@ pipeline {
 		  #jenkinsParams="${jenkinsParams//]}"
 		  jenkinsParams="${jenkinsParams::-2}"
 		  #jenkinsParams="${jenkinsParams//,}"
-          #echo "$jenkinsParams"
+          echo "$jenkinsParams"
 
           for p in $jenkinsParams
           do
 		    IFS=: read parName parVal <<< "$p"
-            echo "Current Parameter name is:     $parName"
+            #parVal="${parVal::-2}"
+			echo "Current Parameter name is:     $parName"
+			echo "Current Value is:     $parVal"
+			parVal="${parVal::-2}"
 			echo "Current Value is:     $parVal"
 			echo ""
 
