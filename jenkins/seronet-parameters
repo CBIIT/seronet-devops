@@ -104,7 +104,7 @@ pipeline {
 		  #jenkinsParams="${PARAMETERS//[}"
 		  jenkinsParams="${PARAMETERS:1}"
 		  #jenkinsParams="${jenkinsParams//]}"
-		  jenkinsParams="${jenkinsParams%?}"
+		  #jenkinsParams="${jenkinsParams%?}"
 		  #jenkinsParams="${jenkinsParams//,}"
           echo "$jenkinsParams"
 
