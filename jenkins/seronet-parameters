@@ -100,15 +100,18 @@ pipeline {
 
 		  aws configure set default.region us-east-1
 
-		  jenkinsParams="${PARAMETERS//[}"
-		  jenkinsParams="${jenkinsParams//]}"
-		  jenkinsParams="${jenkinsParams//,}"
+		  #jenkinsParams="${PARAMETERS//[}"
+		  jenkinsParams="${PARAMETERS:1}"
+		  #jenkinsParams="${jenkinsParams//]}"
+		  jenkinsParams="${jenkinsParams::-2}"
+		  #jenkinsParams="${jenkinsParams//,}"
           #echo "$jenkinsParams"
 
           for p in $jenkinsParams
           do
 		    IFS=: read parName parVal <<< "$p"
             echo "Current Parameter name is:     $parName"
+			echo "Current Parameter name is:     $parName"
 			echo ""
 
 			if [ "$parVal" ]
@@ -116,11 +119,11 @@ pipeline {
 
 			  echo "Setting param $parName"
 			  #aws ssm get-parameter --name $parName
-			  aws ssm put-parameter \
-                --name $parName \
-                --type "SecureString" \
-                --value $parVal \
-                --overwrite
+			  #aws ssm put-parameter \
+              #  --name $parName \
+              #  --type "SecureString" \
+              #  --value $parVal \
+              #  --overwrite
 
             fi
 
