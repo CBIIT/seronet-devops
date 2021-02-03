@@ -109,7 +109,6 @@ pipeline {
           do
 		    IFS=: read parName parVal <<< "$p"
             echo "Current Parameter name is:     $parName"
-			echo "Current Parameter value is:     $parVal"
 			echo ""
 
 			if [ "$parVal" ]
