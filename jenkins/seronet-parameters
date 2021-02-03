@@ -114,7 +114,7 @@ pipeline {
             #parVal="${parVal::-2}"
 			echo "Current Parameter name is:     $parName"
 			echo "Current Value is:     $parVal"
-			parVal="${parVal::-2}"
+			parVal="${parVal%?}"
 			echo "Current Value is:     $parVal"
 			echo ""
 
