@@ -114,14 +114,14 @@ pipeline {
 
 			if [ "$parVal" ]
 			then
-			
-			  echo "Getting param $parName"
-			  aws ssm get-parameter --name $parName
-			  #aws ssm put-parameter \
-              #  --name $parName \
-              #  --type "SecureString" \
-              #  --value $parVal \
-              #  --overwrite
+
+			  echo "Setting param $parName"
+			  #aws ssm get-parameter --name $parName
+			  aws ssm put-parameter \
+                --name $parName \
+                --type "SecureString" \
+                --value $parVal \
+                --overwrite
 
             fi
 
