@@ -45,7 +45,7 @@ pipeline {
             selectedValue: 'DEFAULT', 
             sortMode: 'ASCENDING_SMART', 
             tagFilter: '*', 
-            useRepository: 'https://github.com/CBIIT/nci-seronet-proc-filevalidator')
+            useRepository: 'https://github.com/CBIIT/nci-seronet-validator')
   }
 
   options {
@@ -61,7 +61,7 @@ pipeline {
   				false, extensions: [[$class: 'RelativeTargetDirectory', 
 				relativeTargetDir: 'python']], submoduleCfg: [], 
   				userRemoteConfigs: 
-  				[[url: 'https://github.com/CBIIT/nci-seronet-proc-filevalidator']]])
+  				[[url: 'https://github.com/CBIIT/nci-seronet-validator']]])
 
   			checkout( poll: false, 
 				changelog:false,
