@@ -33,8 +33,9 @@
 - name: write version file
   shell: |
     echo "Current Version:
+    Build Number:  {{ build_number }}
     URL: {{ repo_url.stdout_lines }}
-    Commit ID: {{ repo_commit.stdout_lines }}" >> {{ workspace }}/python/function.ver
+    Commit ID: {{ repo_commit.stdout_lines }}" >> {{ workspace }}/python/function_v{{ build_number }}.ver
 
 - name: build zip archive
   shell: "zip -r {{ version }}.zip * -x *README.md -x *requirements.txt -x '*seronet-devops*' -x '*.git*'"
