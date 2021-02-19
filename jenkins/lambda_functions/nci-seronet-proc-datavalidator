@@ -38,14 +38,14 @@ pipeline {
   
   parameters {
     gitParameter(branchFilter: 'origin/(.*)', 
-            defaultValue: 'master', 
+            defaultValue: 'main', 
             name: 'Branch', 
             type: 'PT_BRANCH_TAG',
             quickFilterEnabled: false, 
             selectedValue: 'DEFAULT', 
             sortMode: 'ASCENDING_SMART', 
             tagFilter: '*', 
-            useRepository: 'https://github.com/CBIIT/nci-seronet-data-validator')
+            useRepository: 'https://github.com/CBIIT/nci-seronet-proc-data-validator')
   }
 
   options {
@@ -61,7 +61,7 @@ pipeline {
   				false, extensions: [[$class: 'RelativeTargetDirectory', 
 				relativeTargetDir: 'python']], submoduleCfg: [], 
   				userRemoteConfigs: 
-  				[[url: 'https://github.com/CBIIT/nci-seronet-data-validator']]])
+  				[[url: 'https://github.com/CBIIT/nci-seronet-proc-data-validator']]])
 
   			checkout( poll: false, 
 				changelog:false,
