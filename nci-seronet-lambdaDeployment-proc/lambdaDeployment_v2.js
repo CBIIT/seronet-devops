@@ -27,6 +27,7 @@ exports.handler = function(event, context) {
 			else lambda.listFunctions(funcParams, function(err, funcData) {
 					if (err) console.log(err, err.stack);
 					else funcData.Functions.forEach(function(lambdaFunc) {
+					  if (!lambdaFunc.FunctionName.includes("nci-seronet-proc-datavalidator")) {
 						if (lambdaFunc.FunctionName.includes("nci-seronet-proc") || lambdaFunc.FunctionName.includes("seronet-file-remover-sns")) {
 							console.log("Function Name: " + lambdaFunc.FunctionName);
 							console.log("Layer to Use: " + layerData.LayerVersionArn);
@@ -41,6 +42,7 @@ exports.handler = function(event, context) {
 								else     console.log(data);
 								});
 							}
+					      }
 						});
 					});
 			
