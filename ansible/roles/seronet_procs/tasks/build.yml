@@ -7,6 +7,8 @@
 
 - name: get python requirements
   shell: "git checkout {{ commit_id }}"
+  args:
+    chdir: "{{ workspace }}/python"
 
 - name: get repo commit ID
   shell: git rev-parse HEAD
