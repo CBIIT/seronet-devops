@@ -1,7 +1,7 @@
 ---
 - name: echo commit id
   debug:
-    msg: "git checkout {{ commit_id }}"
+    msg: "git checkout {{ commit_id }}, {{ procname }}"
 
 - name: checkout specified commit
   shell: "git checkout {{ commit_id }}"
