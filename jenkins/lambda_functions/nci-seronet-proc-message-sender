@@ -105,8 +105,7 @@ pipeline {
       environment {
 //       VERSION = "${BUILD_DATE}"
 	   PROCNAME = "nci-seronet-proc-message-sender"
-//	   COMMIT_ID = "${params.Commit_ID}"
-	   COMMIT_NUM = "a5c2adc5e044c4189710e5815ec2df69d8ab7f94"
+	   COMMIT_NUM = "${params.Commit_ID}"
       }
  		steps {
  			wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
