@@ -46,6 +46,12 @@ pipeline {
             sortMode: 'ASCENDING_SMART', 
             tagFilter: '*', 
             useRepository: 'https://github.com/CBIIT/nci-seronet-proc-rdsloader')
+
+	string(defaultValue: '',
+			description: '',
+			name: 'Commit_ID',
+			trim: false)
+
   }
 
   options {
@@ -99,6 +105,7 @@ pipeline {
       environment {
 //       VERSION = "${BUILD_DATE}"
 	   PROCNAME = "nci-seronet-proc-rdsloader"
+	   COMMIT_NUM = "${params.Commit_ID}"
       }
  		steps {
  			wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {

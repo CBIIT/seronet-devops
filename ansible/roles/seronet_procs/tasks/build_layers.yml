@@ -1,4 +1,9 @@
 ---
+- name: checkout specified commit
+  shell: "git checkout {{ commit_id }}"
+  args:
+    chdir: "{{ workspace }}"
+
 - name: get repo commit ID
   shell: git rev-parse HEAD
   args:
