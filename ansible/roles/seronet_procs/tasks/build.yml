@@ -1,14 +1,18 @@
 ---
+- name: echo commit id
+  debug:
+    msg: "git checkout {{ commit_id }}"
+
+- name: checkout specified commit
+  shell: "git checkout {{ commit_id }}"
+  args:
+    chdir: "{{ workspace }}/python"
+
 - name: get repo url
   shell: git config --get remote.origin.url
   args:
     chdir: "{{ workspace }}/python"
   register: repo_url
-
-- name: get python requirements
-  shell: "git checkout {{ commit_id }}"
-  args:
-    chdir: "{{ workspace }}/python"
 
 - name: get repo commit ID
   shell: git rev-parse HEAD
