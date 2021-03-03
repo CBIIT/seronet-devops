@@ -5,6 +5,9 @@
     chdir: "{{ workspace }}/python"
   register: repo_url
 
+- name: get python requirements
+  shell: "git checkout {{ commit_id }}"
+
 - name: get repo commit ID
   shell: git rev-parse HEAD
   args:
