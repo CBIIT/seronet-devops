@@ -50,9 +50,9 @@
   debug:
     msg: "{{ zip_name }}"
 
-- name: upload zip file to s3
-  aws_s3:
-    bucket: "{{ procname }}"
-    object: "{{ version }}.zip"
-    src: "{{ workspace }}/python/{{ version }}.zip"
-    mode: put
+#- name: upload zip file to s3
+#  aws_s3:
+#    bucket: "{{ procname }}"
+#    object: "{{ version }}.zip"
+#    src: "{{ workspace }}/python/{{ version }}.zip"
+#    mode: put
