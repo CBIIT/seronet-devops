@@ -45,13 +45,13 @@ pipeline {
             selectedValue: 'DEFAULT', 
             sortMode: 'ASCENDING_SMART', 
             tagFilter: '*', 
-            useRepository: 'https://github.com/CBIIT/nci-seronet-proc-fileremover')
-
+            useRepository: 'https://github.com/CBIIT/nci-seronet-proc-message-sender')
+			
 	string(defaultValue: '',
 			description: '',
 			name: 'Commit_ID',
 			trim: false)
-
+	
   }
 
   options {
@@ -67,7 +67,7 @@ pipeline {
   				false, extensions: [[$class: 'RelativeTargetDirectory', 
 				relativeTargetDir: 'python']], submoduleCfg: [], 
   				userRemoteConfigs: 
-  				[[url: 'https://github.com/CBIIT/nci-seronet-proc-fileremover']]])
+  				[[url: 'https://github.com/CBIIT/nci-seronet-proc-message-sender']]])
 
   			checkout( poll: false, 
 				changelog:false,
@@ -104,7 +104,7 @@ pipeline {
   	stage('build and upload'){
       environment {
 //       VERSION = "${BUILD_DATE}"
-	   PROCNAME = "nci-seronet-proc-fileremover-prod"
+	   PROCNAME = "nci-seronet-proc-message-sender-prod"
 	   COMMIT_NUM = "${params.Commit_ID}"
       }
  		steps {

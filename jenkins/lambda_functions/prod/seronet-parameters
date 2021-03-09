@@ -36,38 +36,25 @@ pipeline {
 	}
   }
   
-  parameters {
-    gitParameter(branchFilter: 'origin/(.*)', 
-            defaultValue: 'main', 
-            name: 'Branch', 
-            type: 'PT_BRANCH_TAG',
-            quickFilterEnabled: false, 
-            selectedValue: 'DEFAULT', 
-            sortMode: 'ASCENDING_SMART', 
-            tagFilter: '*', 
-            useRepository: 'https://github.com/CBIIT/nci-seronet-proc-fileremover')
-
-	string(defaultValue: '',
-			description: '',
-			name: 'Commit_ID',
-			trim: false)
-
-  }
+//  parameters {
+//    gitParameter(branchFilter: 'origin/(.*)', 
+//            defaultValue: 'main', 
+//            name: 'Branch', 
+//            type: 'PT_BRANCH_TAG',
+//            quickFilterEnabled: false, 
+//            selectedValue: 'DEFAULT', 
+//            sortMode: 'ASCENDING_SMART', 
+//            tagFilter: '*', 
+//            useRepository: 'https://github.com/CBIIT/nci-seronet-proc-fileremover')
+//  }
 
   options {
   	ansiColor('xterm')
   }
 
   stages{
-  	stage('checkout'){
+    stage('checkout'){
   		steps {
-  			checkout([$class: 'GitSCM', 
-  				branches: [[name: "${params.Branch}"]], 
-  				doGenerateSubmoduleConfigurations: 
-  				false, extensions: [[$class: 'RelativeTargetDirectory', 
-				relativeTargetDir: 'python']], submoduleCfg: [], 
-  				userRemoteConfigs: 
-  				[[url: 'https://github.com/CBIIT/nci-seronet-proc-fileremover']]])
 
   			checkout( poll: false, 
 				changelog:false,
@@ -85,37 +72,50 @@ pipeline {
         }
  
   	}
-	
-    stage('Set Environment'){
-//      environment {
-//        SLACK_URL = "${SLACK_URL}"
-//      }
 
-        steps{
-			script {
-				def now = new Date()
-				env.VERSION = now.format("yyyyMMdd.HHmm", TimeZone.getTimeZone('EDT'))
-//				println env.VERSION
-				}
-			}
-
-	}
-
-  	stage('build and upload'){
+    stage('update params'){
       environment {
-//       VERSION = "${BUILD_DATE}"
-	   PROCNAME = "nci-seronet-proc-fileremover-prod"
-	   COMMIT_NUM = "${params.Commit_ID}"
+	    PARAMETERS = "${params}"
+        }
+      steps {
+
+        script {
+
+          sh label: 'Param-Updates', script: '''#!/bin/bash
+
+		  aws configure set default.region us-east-1
+
+		  jenkinsParams="${PARAMETERS:1}"
+          #echo "$jenkinsParams"
+
+          for p in $jenkinsParams
+          do
+		    IFS=: read parName parVal <<< "$p"
+			echo "Current Parameter name is:     $parName"
+			parVal="${parVal%?}"
+			echo ""
+
+			if [ "$parVal" ]
+			then
+
+			  echo "Setting param $parName"
+			  #aws ssm get-parameter --name $parName
+			  aws ssm put-parameter \
+                --name $parName \
+                --type "SecureString" \
+                --value $parVal \
+                --overwrite
+
+            fi
+
+          done
+
+          '''
+
+          }
+        }
+
       }
- 		steps {
- 			wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
-			  ansiblePlaybook(  			
-                playbook: '${WORKSPACE}/seronet-devops/ansible/seronet_procs.yml', 
-            	  inventory: '${WORKSPACE}/seronet-devops/ansible/hosts', 
-            	  colorized: true)
- 				}
- 			}
- 		}
   }
   post {
 

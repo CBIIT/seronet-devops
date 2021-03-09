@@ -30,11 +30,29 @@
 
 
 pipeline {
-	agent {
-		node {
-			label 'seronet-cicd-prod'
-		}
+  agent {
+    node {
+	  label 'seronet-cicd-prod'
 	}
+  }
+  
+  parameters {
+    gitParameter(branchFilter: 'origin/(.*)', 
+            defaultValue: 'main', 
+            name: 'Branch', 
+            type: 'PT_BRANCH_TAG',
+            quickFilterEnabled: false, 
+            selectedValue: 'DEFAULT', 
+            sortMode: 'ASCENDING_SMART', 
+            tagFilter: '*', 
+            useRepository: 'https://github.com/CBIIT/nci-seronet-proc-layers')
+
+	string(defaultValue: '',
+			description: '',
+			name: 'Commit_ID',
+			trim: false)
+
+  }
 
   options {
   	ansiColor('xterm')
@@ -44,7 +62,7 @@ pipeline {
   	stage('checkout'){
   		steps {
 			checkout([$class: 'GitSCM', 
-  				branches: [[name: '*/main']], 
+  				branches: [[name: "${params.Branch}"]], 
   				doGenerateSubmoduleConfigurations: 
   				false, extensions: [[$class: 'RelativeTargetDirectory', 
 				relativeTargetDir: 'python']], submoduleCfg: [], 
@@ -87,6 +105,7 @@ pipeline {
       environment {
 //       VERSION = "${BUILD_DATE}"
 	   PROCNAME = "nci-seronet-proc-layers-prod"
+	   COMMIT_NUM = "${params.Commit_ID}"
       }
  		steps {
  			wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {

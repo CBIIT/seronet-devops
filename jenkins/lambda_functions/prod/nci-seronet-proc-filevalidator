@@ -30,11 +30,29 @@
 
 
 pipeline {
-	agent {
-		node {
-			label 'seronet-cicd-prod'
-		}
+  agent {
+    node {
+	  label 'seronet-cicd-prod'
 	}
+  }
+  
+  parameters {
+    gitParameter(branchFilter: 'origin/(.*)', 
+            defaultValue: 'master', 
+            name: 'Branch', 
+            type: 'PT_BRANCH_TAG',
+            quickFilterEnabled: false, 
+            selectedValue: 'DEFAULT', 
+            sortMode: 'ASCENDING_SMART', 
+            tagFilter: '*', 
+            useRepository: 'https://github.com/CBIIT/nci-seronet-validator')
+
+	string(defaultValue: '',
+			description: '',
+			name: 'Commit_ID',
+			trim: false)
+
+  }
 
   options {
   	ansiColor('xterm')
@@ -44,12 +62,12 @@ pipeline {
   	stage('checkout'){
   		steps {
   			checkout([$class: 'GitSCM', 
-  				branches: [[name: 'refs/remotes/origin/main']], 
+  				branches: [[name: "${params.Branch}"]], 
   				doGenerateSubmoduleConfigurations: 
   				false, extensions: [[$class: 'RelativeTargetDirectory', 
 				relativeTargetDir: 'python']], submoduleCfg: [], 
   				userRemoteConfigs: 
-  				[[url: 'https://github.com/CBIIT/nci-seronet-proc-filevalidator']]])
+  				[[url: 'https://github.com/CBIIT/nci-seronet-validator']]])
 
   			checkout( poll: false, 
 				changelog:false,
@@ -87,6 +105,7 @@ pipeline {
       environment {
 //       VERSION = "${BUILD_DATE}"
 	   PROCNAME = "nci-seronet-proc-filevalidator-prod"
+	   COMMIT_NUM = "${params.Commit_ID}"
       }
  		steps {
  			wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
