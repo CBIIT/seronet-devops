@@ -1,32 +1,32 @@
 
-//import groovy.json.JsonOutput
-//
-//def sendSlackMessage() {
-//  jenkins_image = ":jenkins:"
-//  beer_image = ":beer:"
-//  long epoch = System.currentTimeMillis()/1000
-//  def BUILD_COLORS = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
-//  
-//  def slack = JsonOutput.toJson(
-//      [
-//            icon_emoji: jenkins_image,
-//            attachments: [[
-//              title: "Jenkins Job Alert - ${currentBuild.currentResult}",
-//              text:  "Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}  ${beer_image}\n Details at: ${env.BUILD_URL}console",
-//              fallback: "Bento Jenkins Build",
-//              color: "${BUILD_COLORS[currentBuild.currentResult]}",
-//              footer: "bento devops",
-//              ts: epoch,
-//              mrkdwn_in: ["footer", "title"],
-//           ]]
-//        ]
-//    )
-//    try {
-//        sh "curl -X POST -H 'Content-type: application/json' --data '${slack}'  '${SLACK_URL}'"
-//    } catch (err) {
-//        echo "${err} Slack notify failed"
-//    }
-//}
+import groovy.json.JsonOutput
+
+def sendSlackMessage() {
+  jenkins_image = ":jenkins:"
+  slack_image = ":sparkles:"
+  long epoch = System.currentTimeMillis()/1000
+  def BUILD_COLORS = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
+  
+  def slack = JsonOutput.toJson(
+      [
+            icon_emoji: jenkins_image,
+            attachments: [[
+              title: "Jenkins Job Alert - ${currentBuild.currentResult}",
+              text:  "Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}  ${slack_image}\n Details at: ${env.BUILD_URL}console",
+              fallback: "Bento Jenkins Build",
+              color: "${BUILD_COLORS[currentBuild.currentResult]}",
+              footer: "bento devops",
+              ts: epoch,
+              mrkdwn_in: ["footer", "title"],
+           ]]
+        ]
+    )
+    try {
+        sh "curl -X POST -H 'Content-type: application/json' --data '${slack}'  '${SLACK_URL}'"
+    } catch (err) {
+        echo "${err} Slack notify failed"
+    }
+}
 
 
 pipeline {
@@ -35,18 +35,6 @@ pipeline {
 	  label 'seronet-cicd-prod'
 	}
   }
-  
-//  parameters {
-//    gitParameter(branchFilter: 'origin/(.*)', 
-//            defaultValue: 'main', 
-//            name: 'Branch', 
-//            type: 'PT_BRANCH_TAG',
-//            quickFilterEnabled: false, 
-//            selectedValue: 'DEFAULT', 
-//            sortMode: 'ASCENDING_SMART', 
-//            tagFilter: '*', 
-//            useRepository: 'https://github.com/CBIIT/nci-seronet-proc-fileremover')
-//  }
 
   options {
   	ansiColor('xterm')
@@ -72,6 +60,16 @@ pipeline {
         }
  
   	}
+
+    stage('Set Environment'){
+      steps {
+        script {
+          withCredentials([string(credentialsId: '	Seronet_Slack_URL', variable: 'SLACK_URL')]) {
+            env.SLACK_URL = "${SLACK_URL}"
+          }
+        }
+      }
+	}
 
     stage('update params'){
       environment {
@@ -119,11 +117,11 @@ pipeline {
   }
   post {
 
-//	always {
-//
-//      sendSlackMessage()
-//
-//    }
+	always {
+
+      sendSlackMessage()
+
+    }
 
 	cleanup {
 	

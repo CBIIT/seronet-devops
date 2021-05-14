@@ -1,32 +1,32 @@
 
-//import groovy.json.JsonOutput
-//
-//def sendSlackMessage() {
-//  jenkins_image = ":jenkins:"
-//  beer_image = ":beer:"
-//  long epoch = System.currentTimeMillis()/1000
-//  def BUILD_COLORS = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
-//  
-//  def slack = JsonOutput.toJson(
-//      [
-//            icon_emoji: jenkins_image,
-//            attachments: [[
-//              title: "Jenkins Job Alert - ${currentBuild.currentResult}",
-//              text:  "Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}  ${beer_image}\n Details at: ${env.BUILD_URL}console",
-//              fallback: "Bento Jenkins Build",
-//              color: "${BUILD_COLORS[currentBuild.currentResult]}",
-//              footer: "bento devops",
-//              ts: epoch,
-//              mrkdwn_in: ["footer", "title"],
-//           ]]
-//        ]
-//    )
-//    try {
-//        sh "curl -X POST -H 'Content-type: application/json' --data '${slack}'  '${SLACK_URL}'"
-//    } catch (err) {
-//        echo "${err} Slack notify failed"
-//    }
-//}
+import groovy.json.JsonOutput
+
+def sendSlackMessage() {
+  jenkins_image = ":jenkins:"
+  slack_image = ":sparkles:"
+  long epoch = System.currentTimeMillis()/1000
+  def BUILD_COLORS = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
+  
+  def slack = JsonOutput.toJson(
+      [
+            icon_emoji: jenkins_image,
+            attachments: [[
+              title: "Jenkins Job Alert - ${currentBuild.currentResult}",
+              text:  "Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}  ${slack_image}\n Details at: ${env.BUILD_URL}console",
+              fallback: "Bento Jenkins Build",
+              color: "${BUILD_COLORS[currentBuild.currentResult]}",
+              footer: "bento devops",
+              ts: epoch,
+              mrkdwn_in: ["footer", "title"],
+           ]]
+        ]
+    )
+    try {
+        sh "curl -X POST -H 'Content-type: application/json' --data '${slack}'  '${SLACK_URL}'"
+    } catch (err) {
+        echo "${err} Slack notify failed"
+    }
+}
 
 
 pipeline {
@@ -87,23 +87,20 @@ pipeline {
   	}
 	
     stage('Set Environment'){
-//      environment {
-//        SLACK_URL = "${SLACK_URL}"
-//      }
-
-        steps{
-			script {
-				def now = new Date()
-				env.VERSION = now.format("yyyyMMdd.HHmm", TimeZone.getTimeZone('EDT'))
-//				println env.VERSION
-				}
-			}
-
+      steps{
+        script {
+          withCredentials([string(credentialsId: '	Seronet_Slack_URL', variable: 'SLACK_URL')]) {
+            env.SLACK_URL = "${SLACK_URL}"
+		    def now = new Date()
+		    env.VERSION = now.format("yyyyMMdd.HHmm", TimeZone.getTimeZone('EDT'))
+		    //println env.VERSION
+		  }
+		}
+	  }
 	}
 
   	stage('build and upload'){
       environment {
-//       VERSION = "${BUILD_DATE}"
 	   PROCNAME = "nci-seronet-proc-fileremover"
 	   COMMIT_NUM = "${params.Commit_ID}"
       }
@@ -119,11 +116,11 @@ pipeline {
   }
   post {
 
-//	always {
-//
-//      sendSlackMessage()
-//
-//    }
+	always {
+
+      sendSlackMessage()
+
+    }
 
 	cleanup {
 	
