@@ -1,3 +1,5 @@
+// lambdaDeployment_v3.js
+
 var AWS = require('aws-sdk');
 var lambda = new AWS.Lambda();
 exports.handler = function(event, context) {
@@ -47,11 +49,8 @@ exports.handler = function(event, context) {
 			});
 			
     } else {
-        if (bucket === "nci-seronet-proc-fileremover") {
-			var functionName = "seronet-file-remover-sns";
-		} else {
-			var functionName = bucket;
-		}
+        var functionName = bucket;
+		
         console.log("uploaded to lambda function: " + functionName);
         var params = {
             FunctionName: functionName,
