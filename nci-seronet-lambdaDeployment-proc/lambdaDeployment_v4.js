@@ -52,6 +52,18 @@ exports.handler = function(event, context) {
         var functionName = bucket;
 		
         console.log("uploaded to lambda function: " + functionName);
+        var versionParams = {
+            FunctionName: functionName,
+        };
+        lambda.publishVersion(versionParams, function(err, data) {
+            if (err) {
+                console.log(err, err.stack);
+                context.fail(err);
+            } else {
+                console.log(data);
+                context.succeed(data);
+            }
+        });
         var params = {
             FunctionName: functionName,
             S3Key: key,
