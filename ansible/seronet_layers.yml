@@ -9,5 +9,5 @@
       include_role:
         name: seronet_procs
         tasks_from: build_layers
-      vars:
-        ansible_python_interpreter: /usr/bin/pip3.8
+#      vars:
+#        ansible_python_interpreter: /usr/bin/pip3.8
