@@ -1,4 +1,4 @@
-// lambdaDeployment_v3.js
+// lambdaDeployment_v6.js
 
 var AWS = require('aws-sdk');
 var lambda = new AWS.Lambda();

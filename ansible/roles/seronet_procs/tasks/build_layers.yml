@@ -20,7 +20,7 @@
   register: reqs_present
 
 - name: get python requirements
-  shell: "pip3 install --ignore-installed --target ./lib/python3.8/site-packages -r requirements.txt"
+  shell: "pip3.8 install --ignore-installed --target ./lib/python3.8/site-packages -r requirements.txt"
   args:
     chdir: "{{ workspace }}/python"
   when: reqs_present.stat.exists == true
