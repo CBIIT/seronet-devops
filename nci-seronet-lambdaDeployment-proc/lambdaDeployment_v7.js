@@ -1,4 +1,4 @@
-// lambdaDeployment_v6.js
+// lambdaDeployment_v7.js
 
 var AWS = require('aws-sdk');
 var lambda = new AWS.Lambda();
@@ -30,7 +30,7 @@ exports.handler = function(event, context) {
 					if (err) console.log(err, err.stack);
 					else funcData.Functions.forEach(function(lambdaFunc) {
 						if (bucket.includes("db-layers")) {
-							if (lambdaFunc.FunctionName.includes("nci-seronet-proc-sql-db-uploader")) {
+							if (lambdaFunc.FunctionName.includes("nci-seronet-proc-sql-db")) {
 								console.log("Function Name: " + lambdaFunc.FunctionName);
 								console.log("Layer to Use: " + layerData.LayerVersionArn);
 								var params = {

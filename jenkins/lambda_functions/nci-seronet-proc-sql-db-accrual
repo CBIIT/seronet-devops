@@ -1,0 +1,132 @@
+
+import groovy.json.JsonOutput
+
+def sendSlackMessage() {
+  jenkins_image = ":jenkins:"
+  slack_image = ":sparkles:"
+  long epoch = System.currentTimeMillis()/1000
+  def BUILD_COLORS = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
+  
+  def slack = JsonOutput.toJson(
+      [
+            icon_emoji: jenkins_image,
+            attachments: [[
+              title: "Jenkins Job Alert - ${currentBuild.currentResult}",
+              text:  "Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}  ${slack_image}\n Details at: ${env.BUILD_URL}console",
+              fallback: "Bento Jenkins Build",
+              color: "${BUILD_COLORS[currentBuild.currentResult]}",
+              footer: "bento devops",
+              ts: epoch,
+              mrkdwn_in: ["footer", "title"],
+           ]]
+        ]
+    )
+    try {
+        sh "curl -X POST -H 'Content-type: application/json' --data '${slack}'  '${SLACK_URL}'"
+    } catch (err) {
+        echo "${err} Slack notify failed"
+    }
+}
+
+
+pipeline {
+  agent {
+    node {
+	  label 'seronet-cicd'
+	}
+  }
+  
+  parameters {
+    gitParameter(branchFilter: 'origin/(.*)', 
+            defaultValue: 'main', 
+            name: 'Branch', 
+            type: 'PT_BRANCH_TAG',
+            quickFilterEnabled: false, 
+            selectedValue: 'DEFAULT', 
+            sortMode: 'ASCENDING_SMART', 
+            tagFilter: '*', 
+            useRepository: 'https://github.com/CBIIT/nci-seronet-proc-sql-accrual_loading')
+
+	string(defaultValue: '',
+			description: '',
+			name: 'Commit_ID',
+			trim: false)
+
+  }
+
+  options {
+  	ansiColor('xterm')
+  }
+
+  stages{
+  	stage('checkout'){
+  		steps {
+  			checkout([$class: 'GitSCM', 
+  				branches: [[name: "${params.Branch}"]], 
+  				doGenerateSubmoduleConfigurations: 
+  				false, extensions: [[$class: 'RelativeTargetDirectory', 
+				relativeTargetDir: 'python']], submoduleCfg: [], 
+  				userRemoteConfigs: 
+  				[[url: 'https://github.com/CBIIT/nci-seronet-proc-sql-accrual_loading']]])
+
+  			checkout( poll: false, 
+				changelog:false,
+				scm: [$class: 'GitSCM', 
+				branches: [[name: '*/main']], 
+				doGenerateSubmoduleConfigurations: false, 
+				extensions: [[$class: 'DisableRemotePoll'],
+				[$class: 'PathRestriction', excludedRegions: '*'], 
+				[$class: 'RelativeTargetDirectory', 
+				relativeTargetDir: 'seronet-devops']], 
+				submoduleCfg: [], 
+				userRemoteConfigs: 
+				[[url: 'https://github.com/CBIIT/seronet-devops.git']]])
+
+        }
+ 
+  	}
+	
+    stage('Set Environment'){
+      steps{
+        script {
+          withCredentials([string(credentialsId: '	Seronet_Slack_URL', variable: 'SLACK_URL')]) {
+            env.SLACK_URL = "${SLACK_URL}"
+		    def now = new Date()
+		    env.VERSION = now.format("yyyyMMdd.HHmm", TimeZone.getTimeZone('EDT'))
+		    //println env.VERSION
+		  }
+		}
+	  }
+	}
+
+  	stage('build and upload'){
+      environment {
+	   PROCNAME = "nci-seronet-proc-sql-db-uploader"
+	   COMMIT_NUM = "${params.Commit_ID}"
+      }
+ 		steps {
+ 			wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
+			  ansiblePlaybook(  			
+                playbook: '${WORKSPACE}/seronet-devops/ansible/seronet_procs.yml', 
+            	  inventory: '${WORKSPACE}/seronet-devops/ansible/hosts', 
+            	  colorized: true)
+ 				}
+ 			}
+ 		}
+  }
+  post {
+
+	always {
+
+      sendSlackMessage()
+
+    }
+
+	cleanup {
+	
+	  cleanWs()
+    
+	}
+
+  }
+}
