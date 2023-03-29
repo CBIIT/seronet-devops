@@ -101,7 +101,7 @@ pipeline {
 
   	stage('build and upload'){
       environment {
-	   PROCNAME = "nci-seronet-proc-sql-db-uploader"
+	   PROCNAME = "nci-seronet-proc-sql-accrual"
 	   COMMIT_NUM = "${params.Commit_ID}"
       }
  		steps {
