@@ -101,7 +101,7 @@ pipeline {
 
   	stage('build and upload'){
       environment {
-	   PROCNAME = "seronet-bsi-uploader"
+	   PROCNAME = "nci-seronet-proc-bsi-uploader"
 	   COMMIT_NUM = "${params.Commit_ID}"
       }
  		steps {
