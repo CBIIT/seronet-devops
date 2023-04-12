@@ -101,7 +101,7 @@ pipeline {
 
   	stage('build and upload'){
       environment {
-	   PROCNAME = "seronet-sql-dictionary-uploader"
+	   PROCNAME = "nci-seronet-proc-dictionary-uploader"
 	   COMMIT_NUM = "${params.Commit_ID}"
       }
  		steps {
