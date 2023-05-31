@@ -58,3 +58,4 @@
     object: "{{ version }}.zip"
     src: "{{ workspace }}/python/{{ version }}.zip"
     mode: put
+    permission: []
