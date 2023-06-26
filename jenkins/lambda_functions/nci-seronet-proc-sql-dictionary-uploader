@@ -45,7 +45,7 @@ pipeline {
             selectedValue: 'DEFAULT', 
             sortMode: 'ASCENDING_SMART', 
             tagFilter: '*', 
-            useRepository: 'https://github.com/CBIIT/seronet-sql-dictionary-uploader')
+            useRepository: 'https://github.com/CBIIT/seronet-data-dictionary-uploader')
 
 	string(defaultValue: '',
 			description: '',
@@ -67,7 +67,7 @@ pipeline {
   				false, extensions: [[$class: 'RelativeTargetDirectory', 
 				relativeTargetDir: 'python']], submoduleCfg: [], 
   				userRemoteConfigs: 
-  				[[credentialsId: 'nciscmbot', url: 'https://github.com/CBIIT/seronet-sql-dictionary-uploader']]])
+  				[[credentialsId: 'nciscmbot', url: 'https://github.com/CBIIT/seronet-data-dictionary-uploader']]])
 
   			checkout( poll: false, 
 				changelog:false,
