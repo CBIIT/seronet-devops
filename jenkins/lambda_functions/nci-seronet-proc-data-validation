@@ -101,7 +101,7 @@ pipeline {
 
   	stage('build and upload'){
       environment {
-	   PROCNAME = "nci-seronet-proc-datavalidation"
+	   PROCNAME = "nci-seronet-proc-data-validation"
 	   COMMIT_NUM = "${params.Commit_ID}"
       }
  		steps {
